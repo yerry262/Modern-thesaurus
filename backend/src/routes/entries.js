@@ -10,12 +10,15 @@ function useMock() {
   return !getDb();
 }
 
+const DAY_IN_MS = 24 * 60 * 60 * 1000;
+const WEEK_IN_MS = 7 * DAY_IN_MS;
+
 // GET /api/entries?period=day|week
 router.get('/', async (req, res) => {
   try {
     const period = req.query.period || 'day';
     const now = Date.now();
-    const cutoff = period === 'week' ? now - 7 * 24 * 60 * 60 * 1000 : now - 24 * 60 * 60 * 1000;
+    const cutoff = now - (period === 'week' ? WEEK_IN_MS : DAY_IN_MS);
 
     if (useMock()) {
       const filtered = mockEntries

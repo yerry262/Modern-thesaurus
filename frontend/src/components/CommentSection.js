@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { addComment, getComments } from '../api';
 
 function CommentSection({ entryId, initialCount }) {
@@ -9,7 +9,7 @@ function CommentSection({ entryId, initialCount }) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  const loadComments = async () => {
+  const loadComments = useCallback(async () => {
     if (comments !== null) return;
     setLoading(true);
     try {
@@ -20,12 +20,11 @@ function CommentSection({ entryId, initialCount }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [entryId, comments]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadComments();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [loadComments]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

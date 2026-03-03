@@ -1,11 +1,11 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { searchEntries } from '../api';
 
 function SearchBar({ onResults, onClear }) {
   const [query, setQuery] = useState('');
   const [searching, setSearching] = useState(false);
 
-  const debounceRef = React.useRef(null);
+  const debounceRef = useRef(null);
 
   const handleChange = useCallback(
     (e) => {
